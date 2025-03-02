@@ -3,11 +3,21 @@ const qrcode = require("qrcode-terminal");
 const qrcodeImage = require("qrcode");
 const express = require("express");
 require("dotenv").config();
+const fs = require("fs");
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 let latestQR = null;
+
+const sessionPath = path.join(__dirname, ".wwebjs_auth");
+
+// Delete the folder if it exists
+if (fs.existsSync(sessionPath)) {
+  fs.rmSync(sessionPath, { recursive: true, force: true });
+  console.log("✅ Deleted old session: .wwebjs_auth");
+}
 
 // Initialize the WhatsApp Client
 const client = new Client({
